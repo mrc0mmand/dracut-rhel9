@@ -2,6 +2,8 @@
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export PATH
 
+set -x
+
 # shellcheck disable=SC1090
 [[ -e .testdir${TEST_RUN_ID:+-$TEST_RUN_ID} ]] && . .testdir${TEST_RUN_ID:+-$TEST_RUN_ID}
 if [[ -z $TESTDIR ]] || [[ ! -d $TESTDIR ]]; then
@@ -118,7 +120,7 @@ while (($# > 0)); do
                     rm -fr -- "$TESTDIR"
                     rm -f -- .testdir${TEST_RUN_ID:+-$TEST_RUN_ID}
                     exit $ret
-                ) < /dev/null 2>&1 | tee "test${TEST_RUN_ID:+-$TEST_RUN_ID}.log"
+                ) < /dev/null 2>&1
             elif [[ $V == "2" ]]; then
                 set -o pipefail
                 # shellcheck disable=SC2154
@@ -132,7 +134,7 @@ while (($# > 0)); do
                     rm -fr -- "$TESTDIR"
                     rm -f -- .testdir${TEST_RUN_ID:+-$TEST_RUN_ID}
                     exit $ret
-                ) < /dev/null 2>&1 | "$basedir/logtee" "test${TEST_RUN_ID:+-$TEST_RUN_ID}.log"
+                ) < /dev/null 2>&1
             else
                 (
                     test_setup && test_run
@@ -141,7 +143,7 @@ while (($# > 0)); do
                     rm -fr -- "$TESTDIR"
                     rm -f -- .testdir${TEST_RUN_ID:+-$TEST_RUN_ID}
                     exit $ret
-                ) < /dev/null > test${TEST_RUN_ID:+-$TEST_RUN_ID}.log 2>&1
+                ) < /dev/null
             fi
             ret=$?
             set +o pipefail
